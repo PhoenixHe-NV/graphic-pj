@@ -1,27 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Hello Quad</title>
-    <script src="./lib/webgl-utils.js"></script>
-    <script src="./lib/webgl-debug.js"></script>
-    <script src="./lib/cuon-matrix.js"></script>
-    <script src="./bundle.js"></script>
+<head>
+  <meta charset="utf-8" />
+  <title>Hello Quad</title>
+  <script src="./lib/webgl-utils.js"></script>
+  <script src="./lib/webgl-debug.js"></script>
+  <script src="./lib/cuon-matrix.js"></script>
 
-  </head>
+</head>
 
-  <body>
-    <canvas id="webgl" width="400" height="400">
-    Please use a browser that supports "canvas"
-    </canvas>
+<body>
+<canvas id="webgl" width="400" height="400">
+  Please use a browser that supports "canvas"
+</canvas>
 
-    <br>
+<p id="info">
+</p>
 
-    <div>模式: <span id="mode"> 编辑中 </span></div>
-    <br>
 
-    <input id="editOnAnimation" type="checkbox">
-    <span>在动画上编辑</span>
-
-  </body>
+<script src="./bundle.js"></script>
+</body>
 </html>
