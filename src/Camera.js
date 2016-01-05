@@ -13,9 +13,7 @@ export class Camera {
     this.up = new Vector3(config.up).normalize();
     this.vlen = 5.0;
 
-
     let v = new Vector3(this.eye).minus(this.at);
-    console.log('after return', v);
     this.eye = new Vector3(this.at).plus(v.normalize().mul(this.vlen));
 
     this.updateInfo();

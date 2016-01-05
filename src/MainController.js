@@ -19,7 +19,7 @@ export class MainController {
     let t = this.camera.getTrans();
 
     for (let e of this.entities) {
-      e.render(t);
+      e.render(t, this.sceneLight);
     }
   }
 
@@ -62,6 +62,10 @@ export class MainController {
 
   setCamera(camera) {
     this.camera = camera;
+  }
+
+  setSceneLight(sceneLight) {
+    this.sceneLight = sceneLight;
   }
 
   clear() {

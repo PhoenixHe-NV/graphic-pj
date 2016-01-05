@@ -1,7 +1,7 @@
 "use strict";
 
-import { gl } from './GLContext';
-import { ShaderProgram } from './ShaderProgram';
+import { gl } from './GLContext'
+import { ShaderProgram } from './ShaderProgram'
 
 let program = new ShaderProgram([
   { name: 'a_Position', length: 3, size: 3 * Float32Array.BYTES_PER_ELEMENT },
@@ -42,7 +42,6 @@ export class TextureEntity {
                                   .scale(config.scale[0], config.scale[1], config.scale[2]);
     this.loadTexture(textureID);
     this.loadData();
-
   }
 
   loadData() {
@@ -79,7 +78,6 @@ export class TextureEntity {
 
   render(transform) {
     if (!this.loadComplete) {
-      console.warn('TextureEntity not ready!');
       return;
     }
 
@@ -93,8 +91,6 @@ export class TextureEntity {
 
     gl.uniform1i(program.args.u_Sampler, this.textureID.ID);
     gl.uniformMatrix4fv(program.args.u_Transform, false, transform.elements);
-
-    //console.log(transform.elements);
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.drawSize);
   }
