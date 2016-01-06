@@ -19,7 +19,7 @@ export class MainController {
     let t = this.camera.getTrans();
 
     for (let e of this.entities) {
-      e.render(t, this.sceneLight);
+      e.render(t, this);
     }
   }
 
@@ -65,7 +65,6 @@ export class MainController {
   }
 
   setSceneLight(sceneLight) {
-    this.sceneLight = sceneLight;
   }
 
   clear() {

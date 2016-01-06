@@ -5,7 +5,7 @@ let infoBoard = document.getElementById('info');
 export class Camera {
 
   constructor(config) {
-    this.fov = 1 / config.fov;
+    this.fov = config.fov;
     this.near = config.near;
     this.far = config.far;
     this.eye = new Vector3(config.eye);
@@ -21,7 +21,7 @@ export class Camera {
 
   getTrans() {
     return new Matrix4()
-        .frustum(-this.fov, this.fov, -this.fov, this.fov, this.near, this.far)
+        .perspective(this.fov, 1.0, this.near, this.far)
         .lookAt(this.eye.elements[0], this.eye.elements[1], this.eye.elements[2],
                 this.at.elements[0], this.at.elements[1], this.at.elements[2],
                 this.up.elements[0], this.up.elements[1], this.up.elements[2]);

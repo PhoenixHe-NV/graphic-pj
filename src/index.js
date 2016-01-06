@@ -18,8 +18,8 @@ for (let obj of Scene.ObjectList) {
 
 controller.setCamera(new Camera(Scene.CameraPara));
 controller.setSceneLight({
-  direction: new Float32Array(Scene.sceneDirectionLight),
-  color: new Float32Array(Scene.sceneAmbientLight)
+  direction: Scene.sceneDirectionLight,
+  color: Scene.sceneAmbientLight
 });
 
 controller.startAnimation();

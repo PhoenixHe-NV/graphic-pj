@@ -5,31 +5,37 @@ import { ShaderProgram } from './ShaderProgram'
 
 let program = new ShaderProgram([
   { name: 'a_Position', length: 3, size: 3 * Float32Array.BYTES_PER_ELEMENT },
+  { name: 'a_Normal', length: 3, size: 3 * Float32Array.BYTES_PER_ELEMENT },
   { name: 'a_TexCoord', length: 2, size: 2 * Float32Array.BYTES_PER_ELEMENT },
-  { name: 'u_Transform' }
+  { name: 'u_Transform' },
+  { name: 'u_ModelMat' }
 ], `
-        attribute vec4 a_Position;
-        attribute vec2 a_TexCoord;
-        uniform mat4 u_Transform;
-        varying vec2 v_TexCoord;
+    attribute vec4 a_Position;
+    attribute vec3 a_Normal;
+    attribute vec2 a_TexCoord;
+    uniform mat4 u_Transform;
+    uniform mat4 u_ModelMat;
 
-        void main() {
-          gl_Position = u_Transform * a_Position;
-          v_TexCoord = a_TexCoord;
-        }
+    varying vec2 v_TexCoord;
+    varying vec3 v_Normal;
+
+    void main() {
+      gl_Position = u_Transform * a_Position;
+      v_TexCoord = a_TexCoord;
+      v_Normal = normalize(u_ModelMat * vec4(a_Normal, 0.0)).xyz;
+    }
 `, [
   { name: 'u_Sampler' }
 ], `
-        #ifdef GL_ES
-        precision mediump float;
-        #endif
+    uniform sampler2D u_Sampler;
+    varying vec2 v_TexCoord;
 
-        uniform sampler2D u_Sampler;
-        varying vec2 v_TexCoord;
+    varying vec3 v_Normal;
 
-        void main() {
-          gl_FragColor = texture2D(u_Sampler, v_TexCoord);
-        }
+    void main() {
+      gl_FragColor = calc_light(texture2D(u_Sampler, v_TexCoord), v_Normal);
+      //gl_FragColor = texture2D(u_Sampler, v_TexCoord);
+    }
 `);
 
 export class TextureEntity {
@@ -47,10 +53,11 @@ export class TextureEntity {
   loadData() {
     let data = [];
 
-    for (let idx of this.config.index) {
+    this.config.index.forEach((idx, x) => {
       data = data.concat(this.config.vertex.slice(idx * 3, idx * 3 + 3));
+      data = data.concat(this.config.normal.slice(x - (x % 3), x - (x % 3) + 3));
       data = data.concat(this.config.texCoord.slice(idx * 2, idx * 2 + 2));
-    }
+    });
 
     this.data = new Float32Array(data);
     this.drawSize = this.config.index.length;
@@ -91,6 +98,8 @@ export class TextureEntity {
 
     gl.uniform1i(program.args.u_Sampler, this.textureID.ID);
     gl.uniformMatrix4fv(program.args.u_Transform, false, transform.elements);
+    gl.uniformMatrix4fv(program.args.u_ModelMat, false, this.transform.elements);
+    program.loadLightArgs();
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.drawSize);
   }
