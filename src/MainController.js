@@ -1,7 +1,7 @@
 "use strict";
 
 import { canvas, gl } from './GLContext'
-import { MOVE_VELOCITY, ROT_VELOCITY } from './Scene'
+import { MOVE_VELOCITY, ROT_VELOCITY, flashLight } from './Scene'
 
 export class MainController {
 
@@ -33,6 +33,7 @@ export class MainController {
     keyMap['J'.charCodeAt(0)] = 'leftCam';
     keyMap['K'.charCodeAt(0)] = 'downCam';
     keyMap['L'.charCodeAt(0)] = 'rightCam';
+    keyMap['F'.charCodeAt(0)] = 'flashLight';
 
     this.state = {};
     for (let key in keyMap) {
@@ -85,6 +86,13 @@ export class MainController {
                     (this.state.right - this.state.left) * MOVE_VELOCITY * elapsed / 1000);
     this.camera.moveCam((this.state.upCam - this.state.downCam) * ROT_VELOCITY * elapsed / 1000 / 180 * Math.PI,
                         (this.state.rightCam - this.state.leftCam) * ROT_VELOCITY * elapsed / 1000 / 180 * Math.PI);
+    flashLight.enable = this.state.flashLight;
+
+    for (let e of this.entities) {
+      if (e.nextFrame) {
+        e.nextFrame(elapsed);
+      }
+    }
 
     this.render();
     this.startAnimation();

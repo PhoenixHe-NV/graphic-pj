@@ -5,6 +5,7 @@ let infoBoard = document.getElementById('info');
 export class Camera {
 
   constructor(config) {
+    this.config = config;
     this.fov = config.fov;
     this.near = config.near;
     this.far = config.far;
@@ -60,6 +61,8 @@ export class Camera {
     infoBoard.innerText = "message:" +
         "\nposition: " + this.at.elements[0].toFixed(2) + " , " + this.at.elements[1].toFixed(1) + " , " + this.at.elements[2].toFixed(2) +
         "\nlook at: " + this.eye.elements[0].toFixed(2) + " , " + this.eye.elements[1].toFixed(1) + " , " + this.eye.elements[2].toFixed(2);
+    this.config.at = this.at;
+    this.config.eye = this.eye;
   }
 
 }

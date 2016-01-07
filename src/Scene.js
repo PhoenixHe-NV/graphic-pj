@@ -131,8 +131,10 @@ var ObjectList = [
 		color : [0.5, 0.9, 0.5],
 		kads : [0.2, 0.8, 0.5],
 		transform : [
-			{type:"translate",content:[-10, 2, 0]},
-			{type:"scale",content:[5, 5, 5]}
+			{ type:"translate", content:[0, 8.0, -30] },
+			{ type:"rotate", content:[0, 0, 1, 0] },
+			{ type:"translate", content:[0, 0, 20] },
+			{ type:"scale",content:[5, 5, 5] }
 		]
 	},
 	{
@@ -185,7 +187,11 @@ var sceneDirectionLight = [-0.35, 0.35, 0.87];
 //点光源的颜色，点光源的位置应当实时与相机位置（eye）相同
 var scenePointLightColor = [0.5, 0.5, 0.6];
 
+var flashLight = {
+  enable: false
+};
+
 export {
 	floorRes, boxRes, CameraPara, MOVE_VELOCITY, ROT_VELOCITY, ObjectList,
-	sceneAmbientLight, sceneDirectionLight, scenePointLightColor
+	sceneAmbientLight, sceneDirectionLight, scenePointLightColor, flashLight
 }

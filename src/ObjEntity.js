@@ -14,37 +14,29 @@ let program = new ShaderProgram([
     uniform mat4 u_Transform;
     uniform mat4 u_ModelMat;
 
-    varying vec3 v_Normal;
-
     void main() {
       gl_Position = u_Transform * a_Position;
-      v_Normal = normalize(u_ModelMat * vec4(a_Normal, 0.0)).xyz;
+      init_light(u_ModelMat * a_Position, (u_ModelMat * vec4(a_Normal, 0.0)).xyz);
     }
 `, [
   { name: 'u_Color' }
 ], `
     uniform vec3 u_Color;
 
-    varying vec3 v_Normal;
-
     void main() {
-      gl_FragColor = calc_light(vec4(u_Color, 1.0), v_Normal);
+      gl_FragColor = calc_light(vec4(u_Color, 1.0));
     }
 `);
 
 export class ObjEntity {
 
   constructor(config) {
+    this.config = config;
     this.objFilePath = config.objFilePath;
     this.color = new Float32Array(config.color);
     this.vertexBuffer = gl.createBuffer();
     this.normalBuffer = gl.createBuffer();
     this.indexBuffer = gl.createBuffer();
-
-    this.transform = new Matrix4();
-    for (let t of config.transform) {
-      this.transform[t.type].apply(this.transform, t.content);
-    }
 
     this.loadObj();
   }
@@ -79,6 +71,11 @@ export class ObjEntity {
     }
 
     let drawingInfo = this.drawingInfo;
+
+    this.transform = new Matrix4();
+    for (let t of this.config.transform) {
+      this.transform[t.type].apply(this.transform, t.content);
+    }
 
     transform = new Matrix4(transform).concat(this.transform);
 

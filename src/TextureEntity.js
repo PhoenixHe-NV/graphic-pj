@@ -17,12 +17,11 @@ let program = new ShaderProgram([
     uniform mat4 u_ModelMat;
 
     varying vec2 v_TexCoord;
-    varying vec3 v_Normal;
 
     void main() {
       gl_Position = u_Transform * a_Position;
       v_TexCoord = a_TexCoord;
-      v_Normal = normalize(u_ModelMat * vec4(a_Normal, 0.0)).xyz;
+      init_light(u_ModelMat * a_Position, (u_ModelMat * vec4(a_Normal, 0.0)).xyz);
     }
 `, [
   { name: 'u_Sampler' }
@@ -30,11 +29,8 @@ let program = new ShaderProgram([
     uniform sampler2D u_Sampler;
     varying vec2 v_TexCoord;
 
-    varying vec3 v_Normal;
-
     void main() {
-      gl_FragColor = calc_light(texture2D(u_Sampler, v_TexCoord), v_Normal);
-      //gl_FragColor = texture2D(u_Sampler, v_TexCoord);
+      gl_FragColor = calc_light(texture2D(u_Sampler, v_TexCoord));
     }
 `);
 

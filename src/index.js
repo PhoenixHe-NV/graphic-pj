@@ -3,6 +3,7 @@
 import { MainController } from './MainController'
 import { TextureEntity } from './TextureEntity'
 import { ObjEntity } from './ObjEntity'
+import { BirdEntity } from './BirdEntity'
 import { gl } from './GLContext'
 import { Camera } from './Camera'
 import * as Scene from './Scene'
@@ -13,7 +14,11 @@ controller.addEntity(new TextureEntity(Scene.floorRes, {glID: gl.TEXTURE0, ID: 0
 controller.addEntity(new TextureEntity(Scene.boxRes, {glID: gl.TEXTURE1, ID: 1}));
 
 for (let obj of Scene.ObjectList) {
-  controller.addEntity(new ObjEntity(obj));
+  if (obj.objFilePath == "./model/bird.obj") {
+    controller.addEntity(new BirdEntity(obj));
+  } else {
+    controller.addEntity(new ObjEntity(obj));
+  }
 }
 
 controller.setCamera(new Camera(Scene.CameraPara));
