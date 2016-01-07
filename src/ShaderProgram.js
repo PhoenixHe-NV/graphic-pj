@@ -11,11 +11,11 @@ let vShaderLib = `
     precision highp float;
     #endif
 
-    varying vec4 v_Position;
+    varying vec4 v_LightPosition;
     varying vec3 v_Normal;
 
     void init_light(vec4 position, vec3 normal) {
-      v_Position = position;
+      v_LightPosition = position;
       v_Normal = normalize(normal);
     }
 `;
@@ -36,14 +36,14 @@ let fShaderLib = `
     uniform vec3 u_PointLightColor;
     uniform vec3 u_PointLightPosition;
 
-    varying vec4 v_Position;
+    varying vec4 v_LightPosition;
     varying vec3 v_Normal;
 
     vec4 calc_light(vec4 color) {
       float diffuse = max(-dot(v_Normal, u_SceneLightDirection), 0.0);
       vec4 light = color * diffuse + vec4(u_SceneLightColor, 1.0) * color;
 
-      vec3 offset = u_PointLightPosition - vec3(v_Position) ;
+      vec3 offset = u_PointLightPosition - vec3(v_LightPosition) ;
       float dist = dot(offset, offset);
       dist = dist * sqrt(dist);
       diffuse = max(-dot(v_Normal, normalize(offset)) * 50000.0 / dist, 0.0);
@@ -70,8 +70,6 @@ export class ShaderProgram extends ShaderProgramBase {
   loadLightArgs() {
     gl.uniform3fv(this.args.u_SceneLightColor, sceneLight.color);
     gl.uniform3fv(this.args.u_SceneLightDirection, sceneLight.direction);
-    let at = new Vector3(CameraPara.at);
-    at.plus(at).minus(new Vector3(CameraPara.eye));
     gl.uniform3fv(this.args.u_PointLightPosition, new Vector3(CameraPara.eye).elements);
 
     if (flashLight.enable) {

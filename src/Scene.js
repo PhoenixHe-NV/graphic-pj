@@ -95,9 +95,9 @@ var boxRes = {
 var CameraPara = {
 	fov:30.0,
 	near:0.1,
-	far:300,
+	far:700,
 	eye:[0.0,5.0,48.0],
-	at:[0.0,5.0,43.0],
+	at:[0.0,5.0,47.0],
 	up:[0.0,1.0,0.0]
 };
 
@@ -191,7 +191,29 @@ var flashLight = {
   enable: false
 };
 
+var skyBox = [
+	'./image/moondust_ft.png',
+	'./image/moondust_bk.png',
+	'./image/moondust_up.png',
+	'./image/moondust_dn.png',
+	'./image/moondust_rt.png',
+	'./image/moondust_lf.png',
+
+	//'./image/starfield_ft.png',
+	//'./image/starfield_bk.png',
+	//'./image/starfield_up.png',
+	//'./image/starfield_dn.png',
+	//'./image/starfield_rt.png',
+	//'./image/starfield_lf.png',
+	//'./image/cwd_ft.JPG',
+	//'./image/cwd_bk.JPG',
+	//'./image/cwd_up.JPG',
+	//'./image/cwd_dn.JPG',
+	//'./image/cwd_rt.JPG',
+	//'./image/cwd_lf.JPG',
+];
+
 export {
-	floorRes, boxRes, CameraPara, MOVE_VELOCITY, ROT_VELOCITY, ObjectList,
+	floorRes, boxRes, CameraPara, MOVE_VELOCITY, ROT_VELOCITY, ObjectList, skyBox,
 	sceneAmbientLight, sceneDirectionLight, scenePointLightColor, flashLight
 }
