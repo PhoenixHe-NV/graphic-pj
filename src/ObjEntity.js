@@ -38,6 +38,11 @@ export class ObjEntity {
     this.normalBuffer = gl.createBuffer();
     this.indexBuffer = gl.createBuffer();
 
+    this.transform = new Matrix4();
+    for (let t of this.config.transform) {
+      this.transform[t.type].apply(this.transform, t.content);
+    }
+
     this.loadObj();
   }
 
@@ -71,11 +76,6 @@ export class ObjEntity {
     }
 
     let drawingInfo = this.drawingInfo;
-
-    this.transform = new Matrix4();
-    for (let t of this.config.transform) {
-      this.transform[t.type].apply(this.transform, t.content);
-    }
 
     transform = new Matrix4(transform).concat(this.transform);
 

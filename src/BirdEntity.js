@@ -13,10 +13,10 @@ export class BirdEntity extends ObjEntity {
     this.translate = config.transform[2].content;
   }
 
-  nextFrame(timestamp) {
-    this.offset0 += timestamp / 1000 * 90;
+  nextFrame(elapsed) {
+    this.offset0 += elapsed * 90;
     this.offset0 %= 360;
-    this.offset1 += timestamp / 1000 * Math.PI;
+    this.offset1 += elapsed * Math.PI;
     this.offset1 %= 2 * Math.PI;
 
     this.rotate[0] = this.offset0;
@@ -24,6 +24,11 @@ export class BirdEntity extends ObjEntity {
   }
 
   render(transform) {
+    this.transform = new Matrix4();
+    for (let t of this.config.transform) {
+      this.transform[t.type].apply(this.transform, t.content);
+    }
+
     super.render(transform);
   }
 }

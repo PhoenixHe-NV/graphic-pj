@@ -45,8 +45,8 @@ let fShaderLib = `
 
       vec3 offset = u_PointLightPosition - vec3(v_LightPosition) ;
       float dist = dot(offset, offset);
-      dist = dist * sqrt(dist);
-      diffuse = max(-dot(v_Normal, normalize(offset)) * 50000.0 / dist, 0.0);
+      //dist = dist * sqrt(dist);
+      diffuse = max(-dot(v_Normal, normalize(offset)) * 5000.0 / dist, 0.0);
       diffuse = min(diffuse, 1.0);
       light = light + vec4(u_PointLightColor * diffuse, 1.0) * color;
 

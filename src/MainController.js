@@ -19,7 +19,7 @@ export class MainController {
     let t = this.camera.getTrans();
 
     for (let e of this.entities) {
-      e.render(t, this);
+      e.render(t);
     }
   }
 
@@ -65,9 +65,6 @@ export class MainController {
     this.camera = camera;
   }
 
-  setSceneLight(sceneLight) {
-  }
-
   clear() {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -79,13 +76,13 @@ export class MainController {
   }
 
   animate(timestamp) {
-    let elapsed = timestamp - this.lastTimestamp;
+    let elapsed = (timestamp - this.lastTimestamp) / 1000;
     this.lastTimestamp = timestamp;
 
-    this.camera.move((this.state.up - this.state.down) * MOVE_VELOCITY * elapsed / 1000,
-                    (this.state.right - this.state.left) * MOVE_VELOCITY * elapsed / 1000);
-    this.camera.moveCam((this.state.upCam - this.state.downCam) * ROT_VELOCITY * elapsed / 1000 / 180 * Math.PI,
-                        (this.state.rightCam - this.state.leftCam) * ROT_VELOCITY * elapsed / 1000 / 180 * Math.PI);
+    this.camera.move((this.state.up - this.state.down) * MOVE_VELOCITY * elapsed,
+                    (this.state.right - this.state.left) * MOVE_VELOCITY * elapsed);
+    this.camera.moveCam((this.state.upCam - this.state.downCam) * ROT_VELOCITY * elapsed / 180 * Math.PI,
+                        (this.state.rightCam - this.state.leftCam) * ROT_VELOCITY * elapsed / 180 * Math.PI);
     flashLight.enable = this.state.flashLight;
 
     for (let e of this.entities) {

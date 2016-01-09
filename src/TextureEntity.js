@@ -42,7 +42,7 @@ export class TextureEntity {
     this.buffer = gl.createBuffer();
     this.transform = new Matrix4().translate(config.translate[0], config.translate[1], config.translate[2])
                                   .scale(config.scale[0], config.scale[1], config.scale[2]);
-    this.loadTexture(textureID);
+    this.loadTexture();
     this.loadData();
   }
 

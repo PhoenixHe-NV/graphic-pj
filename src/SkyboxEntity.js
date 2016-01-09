@@ -22,7 +22,6 @@ let program = new ShaderProgram([
       vec3 u_CameraRight = normalize(cross(u_CameraDirection, u_CameraUp));
       v_Position = a_Position[0] * u_CameraRight + a_Position[1] * u_CameraUp + u_CameraNear * u_CameraDirection;
     }
-
 `, [
   { name: 'u_Cubemap' }
 ], `
@@ -42,16 +41,15 @@ export class SkyboxEntity {
     this.loadImg = [];
     this.loadComplete = false;
     this.buffer = gl.createBuffer();
+    this.data = new Float32Array([1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0, -1.0]);
 
     for (let imgSrc of config) {
       let image = new Image();
       image.onload = () => {
         if (++this.loadCnt < 6) {
-          console.log(this.loadCnt);
           return;
         }
 
-        this.data = new Float32Array([1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0, -1.0]);
         let texture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
         for (let i = 0; i < 6; ++i) {
@@ -61,7 +59,6 @@ export class SkyboxEntity {
         gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 
-        console.log('complete');
         this.loadComplete = true;
       };
       image.src = imgSrc;
@@ -76,14 +73,15 @@ export class SkyboxEntity {
     }
 
     program.loadProgram();
+
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
     gl.bufferData(gl.ARRAY_BUFFER, this.data, gl.STATIC_DRAW);
-
     program.loadVaArgs();
+
     gl.uniform1i(program.args.u_Cubemap, 0);
     gl.uniform3fv(program.args.u_CameraUp, CameraPara.up.elements);
     gl.uniform3fv(program.args.u_CameraDirection, new Vector3(CameraPara.at).minus(CameraPara.eye).elements);
-    gl.uniform1f(program.args.u_CameraNear, 1.2);
+    gl.uniform1f(program.args.u_CameraNear, 1.5);
 
     gl.disable(gl.DEPTH_TEST);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);

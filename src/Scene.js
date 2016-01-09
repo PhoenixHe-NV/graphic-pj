@@ -93,7 +93,8 @@ var boxRes = {
 
 //相机的初始参数信息，相机宽高比和canvas宽高比相同
 var CameraPara = {
-	fov:30.0,
+	fov:45.0,
+	aspect: 16 / 9,
 	near:0.1,
 	far:700,
 	eye:[0.0,5.0,48.0],

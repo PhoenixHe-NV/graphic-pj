@@ -24,10 +24,6 @@ for (let obj of Scene.ObjectList) {
 }
 
 controller.setCamera(new Camera(Scene.CameraPara));
-controller.setSceneLight({
-  direction: Scene.sceneDirectionLight,
-  color: Scene.sceneAmbientLight
-});
 
 controller.startAnimation();
 
