@@ -23,12 +23,12 @@ export class BirdEntity extends ObjEntity {
     this.translate[1] = Math.sin(this.offset1) * 5;
   }
 
-  render(transform) {
+  render(transform, renderShadow) {
     this.transform = new Matrix4();
     for (let t of this.config.transform) {
       this.transform[t.type].apply(this.transform, t.content);
     }
 
-    super.render(transform);
+    super.render(transform, renderShadow);
   }
 }

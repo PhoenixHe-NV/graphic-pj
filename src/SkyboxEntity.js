@@ -67,8 +67,8 @@ export class SkyboxEntity {
 
   }
 
-  render() {
-    if (!this.loadComplete) {
+  render(transform, renderShadow) {
+    if (!this.loadComplete || renderShadow) {
       return;
     }
 
@@ -84,7 +84,9 @@ export class SkyboxEntity {
     gl.uniform1f(program.args.u_CameraNear, 1.5);
 
     gl.disable(gl.DEPTH_TEST);
+    gl.disable(gl.CULL_FACE);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
   }
 }

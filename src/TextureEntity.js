@@ -67,11 +67,13 @@ export class TextureEntity {
 
       var texture = gl.createTexture();
 
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, gl.TRUE);
       gl.activeTexture(this.textureID.glID);
       gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINERAR);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+      gl.generateMipmap(gl.TEXTURE_2D);
 
       this.loadComplete = true;
     };
@@ -79,7 +81,7 @@ export class TextureEntity {
     image.src = this.config.texImagePath;
   }
 
-  render(transform) {
+  render(transform, renderShadow) {
     if (!this.loadComplete) {
       return;
     }
@@ -95,8 +97,9 @@ export class TextureEntity {
     gl.uniform1i(program.args.u_Sampler, this.textureID.ID);
     gl.uniformMatrix4fv(program.args.u_Transform, false, transform.elements);
     gl.uniformMatrix4fv(program.args.u_ModelMat, false, this.transform.elements);
-    program.loadLightArgs();
+    program.loadLightArgs(renderShadow);
 
+    gl.cullFace(gl.FRONT);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.drawSize);
   }
 }

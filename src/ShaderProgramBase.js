@@ -7,13 +7,10 @@ let currentProgram = null;
 
 export class ShaderProgramBase {
 
-  constructor(vShaderArgs, vShaderCode, fShaderArgs, fShaderCode) {
+  constructor(args, shaders) {
     this.program = gl.createProgram();
 
-    let vShader = ShaderProgramBase.initShader(gl.VERTEX_SHADER, vShaderCode);
-    let fShader = ShaderProgramBase.initShader(gl.FRAGMENT_SHADER, fShaderCode);
-    gl.attachShader(this.program, vShader);
-    gl.attachShader(this.program, fShader);
+    shaders.forEach((shader) => gl.attachShader(this.program, shader));
 
     gl.linkProgram(this.program);
     let linked = gl.getProgramParameter(this.program, gl.LINK_STATUS);
@@ -28,10 +25,8 @@ export class ShaderProgramBase {
 
     this.args = {};
 
-    this.vaArgsTotalLen = this.loadShaderArgLocation(vShaderArgs);
-    this.loadShaderArgLocation(fShaderArgs);
-
-    this.vaArgs = vShaderArgs.filter((arg) => arg.name[0] == 'a');
+    this.vaArgsTotalLen = this.loadShaderArgLocation(args);
+    this.vaArgs = args.filter((arg) => arg.name[0] == 'a');
   }
 
   loadShaderArgLocation(args) {

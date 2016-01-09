@@ -12,8 +12,8 @@ import * as Scene from './Scene'
 let controller = new MainController();
 
 controller.addEntity(new SkyboxEntity(Scene.skyBox));
-controller.addEntity(new TextureEntity(Scene.floorRes, {glID: gl.TEXTURE0, ID: 0}));
-controller.addEntity(new TextureEntity(Scene.boxRes, {glID: gl.TEXTURE1, ID: 1}));
+controller.addEntity(new TextureEntity(Scene.floorRes, {glID: gl.TEXTURE1, ID: 1}));
+controller.addEntity(new TextureEntity(Scene.boxRes, {glID: gl.TEXTURE2, ID: 2}));
 
 for (let obj of Scene.ObjectList) {
   if (obj.objFilePath == "./model/bird.obj") {

@@ -70,7 +70,7 @@ export class ObjEntity {
     request.send();
   }
 
-  render(transform) {
+  render(transform, renderShadow) {
     if (!this.loadComplete) {
       return;
     }
@@ -95,11 +95,12 @@ export class ObjEntity {
     gl.uniformMatrix4fv(program.args.u_ModelMat, false, this.transform.elements);
     gl.uniform3fv(program.args.u_Color, this.color);
 
-    program.loadLightArgs();
+    program.loadLightArgs(renderShadow);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, drawingInfo.indices, gl.STATIC_DRAW);
 
+    gl.cullFace(gl.BACK);
     gl.drawElements(gl.TRIANGLES, drawingInfo.indices.length, gl.UNSIGNED_SHORT, 0);
   }
 }
