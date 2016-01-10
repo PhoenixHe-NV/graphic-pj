@@ -60,10 +60,10 @@ export class Camera {
   updateInfo() {
     infoBoard.innerText = "message:" +
         "\nposition: " + this.eye.elements[0].toFixed(2) + " , " + this.eye.elements[1].toFixed(1) + " , " + this.eye.elements[2].toFixed(2) +
-        "\nlook at: " + this.at.elements[0].toFixed(2) + " , " + this.at.elements[1].toFixed(1) + " , " + this.at.elements[2].toFixed(2);
+        "\nlook at: " + this.at.elements[0].toFixed(2) + " , " + this.at.elements[1].toFixed(1) + " , " + this.at.elements[2].toFixed(2) +
+        "\nfps: " + this.config.fps;
     this.config.at = this.at;
     this.config.eye = this.eye;
     this.config.up = this.up;
   }
-
 }

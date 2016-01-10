@@ -105,7 +105,6 @@ let lightUp = new Vector3([0, 1, 0]).cross(sceneLight.direction).normalize();
 
 let eye = new Vector3(CameraPara.eye).plus(new Vector3(sceneLight.direction).mul(128));
 let at = new Vector3(eye).minus(sceneLight.direction);
-//let eye = new Vector3([0, 0, 0]).plus(new Vector3(sceneLight.direction).mul(128));
 let mat = new Matrix4().setOrtho(-25, 16, -32, 32, -256, 256)
     .lookAt(eye.elements[0], eye.elements[1], eye.elements[2],
         at.elements[0], at.elements[1], at.elements[2],

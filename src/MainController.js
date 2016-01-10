@@ -2,13 +2,15 @@
 
 import { canvas, gl } from './GLContext'
 import { frameBuffer, rebindRenderBuffer } from './ShadowFrameBuffer'
-import { MOVE_VELOCITY, ROT_VELOCITY, flashLight } from './Scene'
+import { MOVE_VELOCITY, ROT_VELOCITY, flashLight, CameraPara } from './Scene'
 
 export class MainController {
 
   constructor() {
     this.animateWrap = (timestamp) => this.animate(timestamp);
     this.lastTimestamp = 0;
+    this.fpsTime = 0;
+    this.fpsCount = 0;
 
     this.initKeys();
 
@@ -86,7 +88,19 @@ export class MainController {
     window.requestAnimationFrame(this.animateWrap);
   }
 
+  updateFps(timestamp) {
+    let t = parseInt(timestamp / 1000)
+    if (t != this.fpsTime) {
+      CameraPara.fps = this.fpsCount;
+      this.camera.updateInfo();
+      this.fpsCount = 0;
+      this.fpsTime = t;
+    }
+    ++this.fpsCount;
+  }
+
   animate(timestamp) {
+    this.updateFps(timestamp);
     let elapsed = (timestamp - this.lastTimestamp) / 1000;
     this.lastTimestamp = timestamp;
 
