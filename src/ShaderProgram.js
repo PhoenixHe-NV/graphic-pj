@@ -79,9 +79,13 @@ let fShaderLib1 = `
       //diffuse = min(diffuse, 1.0);
       //light = light + vec4(u_PointLightColor * diffuse, 1.0) * color;
 
-      float shadowDist = texture2D(u_ShadowSampler, v_ShadowPosition.xy / v_ShadowPosition.w * 0.5 + 0.5).z;
-      light = light + ((shadowDist + 0.002 < v_ShadowPosition.z) ? vec4(0.0, 0.0, 0.0, 1.0) : diffuse * color);
-
+      vec2 lightUV = v_ShadowPosition.xy / v_ShadowPosition.w * 0.5 + 0.5;
+      if (lightUV.x > 0.0) {
+        float shadowDist = texture2D(u_ShadowSampler, lightUV).z;
+        light = light + ((shadowDist + 0.002 < v_ShadowPosition.z) ? vec4(0.0, 0.0, 0.0, 1.0) : diffuse * color);
+      } else {
+        light = light + diffuse * color;
+      }
       gl_FragColor = light;
       //gl_FragColor = vec4(shadowDist, shadowDist, shadowDist, 1.0);
       //gl_FragColor = texture2D(u_ShadowSampler, v_ShadowPosition.xy / v_ShadowPosition.w * 0.5 + 0.5);
@@ -142,7 +146,9 @@ export class ShaderProgram {
 
     gl.uniformMatrix4fv(p.args.u_LightMat, false, mat.elements);
 
-    gl.uniform1i(p.args.u_ShadowSampler, 0);
+    if (!renderShadow) {
+      gl.uniform1i(p.args.u_ShadowSampler, 0);
+    }
   }
 
 }

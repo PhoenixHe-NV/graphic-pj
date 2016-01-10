@@ -1,7 +1,7 @@
 "use strict";
 
 import { canvas, gl } from './GLContext'
-import { frameBuffer } from './ShadowFrameBuffer'
+import { frameBuffer, rebindRenderBuffer } from './ShadowFrameBuffer'
 import { MOVE_VELOCITY, ROT_VELOCITY, flashLight } from './Scene'
 
 export class MainController {
@@ -20,6 +20,7 @@ export class MainController {
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, frameBuffer);
     //this.clear();
+    rebindRenderBuffer();
     for (let e of this.entities) {
       e.render(t, true);
     }
@@ -76,6 +77,7 @@ export class MainController {
   clear() {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BIT);
+    gl.clearDepth(1);
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
   }
