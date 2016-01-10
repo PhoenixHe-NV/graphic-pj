@@ -16,16 +16,16 @@ export class MainController {
   }
 
   render() {
-    this.clear();
     let t = this.camera.getTrans();
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, frameBuffer);
-    //gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    //this.clear();
     for (let e of this.entities) {
       e.render(t, true);
     }
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    this.clear();
     for (let e of this.entities) {
       e.render(t, false);
     }
@@ -75,7 +75,7 @@ export class MainController {
 
   clear() {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BIT);
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
   }

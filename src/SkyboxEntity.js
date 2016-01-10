@@ -51,6 +51,7 @@ export class SkyboxEntity {
         }
 
         let texture = gl.createTexture();
+        gl.activeTexture(gl.TEXTURE3);
         gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
         for (let i = 0; i < 6; ++i) {
           gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.loadImg[i]);
@@ -72,16 +73,16 @@ export class SkyboxEntity {
       return;
     }
 
-    program.loadProgram();
+    let p = program.loadProgram(0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
     gl.bufferData(gl.ARRAY_BUFFER, this.data, gl.STATIC_DRAW);
-    program.loadVaArgs();
+    p.loadVaArgs();
 
-    gl.uniform1i(program.args.u_Cubemap, 0);
-    gl.uniform3fv(program.args.u_CameraUp, CameraPara.up.elements);
-    gl.uniform3fv(program.args.u_CameraDirection, new Vector3(CameraPara.at).minus(CameraPara.eye).elements);
-    gl.uniform1f(program.args.u_CameraNear, 1.5);
+    gl.uniform1i(p.args.u_Cubemap, 3);
+    gl.uniform3fv(p.args.u_CameraUp, CameraPara.up.elements);
+    gl.uniform3fv(p.args.u_CameraDirection, new Vector3(CameraPara.at).minus(CameraPara.eye).elements);
+    gl.uniform1f(p.args.u_CameraNear, 1.5);
 
     gl.disable(gl.DEPTH_TEST);
     gl.disable(gl.CULL_FACE);

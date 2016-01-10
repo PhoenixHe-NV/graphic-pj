@@ -29,5 +29,8 @@ controller.startAnimation();
 
 //setTimeout(() => {
 //  controller.render();
-//}, 100);
+//  setTimeout(() => {
+//    controller.render();
+//  }, 500);
+//}, 500);
 

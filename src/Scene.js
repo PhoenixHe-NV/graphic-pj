@@ -1,3 +1,5 @@
+import { canvas } from './GLContext'
+
 //3D场景配置文件
 
 //地面模型的相关信息
@@ -94,7 +96,7 @@ var boxRes = {
 //相机的初始参数信息，相机宽高比和canvas宽高比相同
 var CameraPara = {
 	fov:45.0,
-	aspect: 16 / 9,
+	aspect: canvas.width / canvas.height,
 	near:0.1,
 	far:700,
 	eye:[0.0,5.0,48.0],

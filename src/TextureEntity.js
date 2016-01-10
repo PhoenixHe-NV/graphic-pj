@@ -30,7 +30,7 @@ let program = new ShaderProgram([
     varying vec2 v_TexCoord;
 
     void main() {
-      gl_FragColor = calc_light(texture2D(u_Sampler, v_TexCoord));
+      calc_light(texture2D(u_Sampler, v_TexCoord));
     }
 `);
 
@@ -67,11 +67,11 @@ export class TextureEntity {
 
       var texture = gl.createTexture();
 
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, gl.TRUE);
+      //gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, gl.TRUE);
       gl.activeTexture(this.textureID.glID);
       gl.bindTexture(gl.TEXTURE_2D, texture);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINERAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
       gl.generateMipmap(gl.TEXTURE_2D);
 
@@ -88,18 +88,21 @@ export class TextureEntity {
 
     transform = new Matrix4(transform).concat(this.transform);
 
-    program.loadProgram();
+    let p = program.loadProgram(renderShadow);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
     gl.bufferData(gl.ARRAY_BUFFER, this.data, gl.STATIC_DRAW);
-    program.loadVaArgs();
+    p.loadVaArgs();
 
-    gl.uniform1i(program.args.u_Sampler, this.textureID.ID);
-    gl.uniformMatrix4fv(program.args.u_Transform, false, transform.elements);
-    gl.uniformMatrix4fv(program.args.u_ModelMat, false, this.transform.elements);
+    gl.uniform1i(p.args.u_Sampler, this.textureID.ID);
+    gl.uniformMatrix4fv(p.args.u_Transform, false, transform.elements);
+    gl.uniformMatrix4fv(p.args.u_ModelMat, false, this.transform.elements);
+
     program.loadLightArgs(renderShadow);
 
     gl.cullFace(gl.FRONT);
+    //gl.disable(gl.CULL_FACE);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.drawSize);
+    //gl.enable(gl.CULL_FACE);
   }
 }

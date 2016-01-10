@@ -24,7 +24,7 @@ let program = new ShaderProgram([
     uniform vec3 u_Color;
 
     void main() {
-      gl_FragColor = calc_light(vec4(u_Color, 1.0));
+      calc_light(vec4(u_Color, 1.0));
     }
 `);
 
@@ -79,21 +79,21 @@ export class ObjEntity {
 
     transform = new Matrix4(transform).concat(this.transform);
 
-    program.loadProgram();
+    let p = program.loadProgram(renderShadow);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, drawingInfo.vertices, gl.STATIC_DRAW);
-    gl.vertexAttribPointer(program.args.a_Position, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(program.args.a_Position);
+    gl.vertexAttribPointer(p.args.a_Position, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(p.args.a_Position);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, drawingInfo.normals, gl.STATIC_DRAW);
-    gl.vertexAttribPointer(program.args.a_Normal, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(program.args.a_Normal);
+    gl.vertexAttribPointer(p.args.a_Normal, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(p.args.a_Normal);
 
-    gl.uniformMatrix4fv(program.args.u_Transform, false, transform.elements);
-    gl.uniformMatrix4fv(program.args.u_ModelMat, false, this.transform.elements);
-    gl.uniform3fv(program.args.u_Color, this.color);
+    gl.uniformMatrix4fv(p.args.u_Transform, false, transform.elements);
+    gl.uniformMatrix4fv(p.args.u_ModelMat, false, this.transform.elements);
+    gl.uniform3fv(p.args.u_Color, this.color);
 
     program.loadLightArgs(renderShadow);
 
