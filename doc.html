@@ -34,22 +34,18 @@
 
 <h3 id="运行方式">运行方式</h3>
 
-<p>代码在 <code>./src</code> 目录下，使用 <code>webpack</code> 打包。首先需要安装 <code>webpack</code></p>
-
-
+<p>代码在 <code>./src</code> 目录下，使用 <code>webpack</code> 打包。首先需要安装 <code>webpack</code> 并打包：</p>
 
 <pre class="prettyprint"><code class=" hljs lasso">npm install <span class="hljs-attribute">-g</span> webpack
-npm install <span class="hljs-attribute">-g</span> webpack<span class="hljs-attribute">-dev</span><span class="hljs-attribute">-server</span></code></pre>
+npm install <span class="hljs-attribute">-g</span> webpack<span class="hljs-attribute">-dev</span><span class="hljs-attribute">-server</span>
+npm install
+webpack</code></pre>
 
-<p>然后可以用 <code>webpack-dev-server</code> 运行于 <code>http://localhost:8080</code></p>
-
-
+<p>然后可以用 <code>webpack-dev-server</code> 运行于 <code>http://localhost:8080</code>：</p>
 
 <pre class="prettyprint"><code class=" hljs lasso">webpack<span class="hljs-attribute">-dev</span><span class="hljs-attribute">-server</span> <span class="hljs-subst">--</span><span class="hljs-keyword">inline</span> <span class="hljs-attribute">-d</span></code></pre>
 
-<p>或者也可以用其它 <strong>http server</strong> 打开 <code>index.html</code></p>
-
-
+<p>或者也可以用其它 <strong>http server</strong> 打开 <code>index.html</code>。在线打开：<a href="https://htc.fdu13ss.org/public/PJ/index.html">https://htc.fdu13ss.org/public/PJ/index.html</a></p>
 
 <h3 id="实现的部分">实现的部分</h3>
 
@@ -63,6 +59,8 @@ npm install <span class="hljs-attribute">-g</span> webpack<span class="hljs-attr
 <li>点光源光照（无阴影效果）</li>
 <li>fps 计数</li>
 </ul>
+
+
 
 <h3 id="关于天空贴图的实现">关于天空贴图的实现</h3>
 
@@ -88,7 +86,7 @@ npm install <span class="hljs-attribute">-g</span> webpack<span class="hljs-attr
 <ul>
 <li>点光源阴影，在点光源处渲染一个 <code>cubemap</code> 的深度贴图，其余部分步骤同平行光阴影。</li>
 <li>阴影过滤与反锯齿，使用 VSM 过滤及反锯齿算法使得阴影看起来更加真实。</li>
-<li>水面反射折射(只能想想…)，渲染场景的反射部分贴图和折射部分贴图，然后计算水面的物理变化，并根据折射和反射的物理性质将贴图变为水面的部分。</li>
+<li>水面反射折射(只能想想…)，渲染场景的反x射部分贴图和折射部分贴图，然后计算水面的物理变化，并根据折射和反射的物理性质将贴图变为水面的部分。</li>
 <li>计算大气折射，使得天空看起来更加真实。在视线到天空的路径上进行积分即可。</li>
 </ul></div></body>
 </html>
