@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>doc</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="计算机图形学-pj3">计算机图形学 PJ3</h1>
+
+<p>13302010023 <br>
+何天成</p>
+
+
+
+<h3 id="运行环境">运行环境</h3>
+
+<ul>
+<li>OSX El Capitan 10.11.2 (15C50)</li>
+<li>Google Chrome Version 46.0.2490.86 (64-bit)</li>
+</ul>
+
+
+
+<h3 id="开发环境">开发环境</h3>
+
+<ul>
+<li>Intellij Idea 15.0.2</li>
+<li>webpack 1.12.9</li>
+</ul>
+
+
+
+<h3 id="运行方式">运行方式</h3>
+
+<p>代码在 <code>./src</code> 目录下，使用 <code>webpack</code> 打包。首先需要安装 <code>webpack</code></p>
+
+
+
+<pre class="prettyprint"><code class=" hljs lasso">npm install <span class="hljs-attribute">-g</span> webpack
+npm install <span class="hljs-attribute">-g</span> webpack<span class="hljs-attribute">-dev</span><span class="hljs-attribute">-server</span></code></pre>
+
+<p>然后可以用 <code>webpack-dev-server</code> 运行于 <code>http://localhost:8080</code></p>
+
+
+
+<pre class="prettyprint"><code class=" hljs lasso">webpack<span class="hljs-attribute">-dev</span><span class="hljs-attribute">-server</span> <span class="hljs-subst">--</span><span class="hljs-keyword">inline</span> <span class="hljs-attribute">-d</span></code></pre>
+
+<p>或者也可以用其它 <strong>http server</strong> 打开 <code>index.html</code></p>
+
+
+
+<h3 id="实现的部分">实现的部分</h3>
+
+<ul>
+<li>贴图物品的加载，分层贴图（mipmap）</li>
+<li>Obj模型的加载 </li>
+<li>开启 <code>CULL_FACE</code></li>
+<li>场景漫游</li>
+<li>天空贴图</li>
+<li>平行光照（附带阴影效果）</li>
+<li>点光源光照（无阴影效果）</li>
+<li>fps 计数</li>
+</ul>
+
+<h3 id="关于天空贴图的实现">关于天空贴图的实现</h3>
+
+<p>见 <code>src/SkyboxEntity.js</code> 。天空贴图是一个 <code>cubemap</code>，由六张图组成。将六张图加载到一个 <code>cubemap texture</code> 之后，根据相机的位置和方向进行渲染即可。渲染天空时要关闭深度测试和面切除。</p>
+
+
+
+<h3 id="关于光照和阴影的实现">关于光照和阴影的实现</h3>
+
+<p>见 <code>src/ShaderProgram.js</code>，统一处理了光照效果。阴影的做法是，首先从光照位置渲染一张光照深度图到一个 <code>Texture</code> 上，然后正常渲染，在 <code>FragmentShader</code> 中读取 <code>Texture</code> 并与当前点的光照深度进行比对，如果当前点的光照深度更深，则判断为在阴影中，取消该处的平行光效果。点光源光照则简单的按照距离计算强度。</p>
+
+
+
+<h3 id="效果图">效果图</h3>
+
+<p><img src="https://lh3.googleusercontent.com/-uf9titKgd44/VpHSFLQ_rRI/AAAAAAAAF6Y/DjajLzc1fzY/s0/Screen+Shot+2016-01-10+at+11.36.31+AM.png" alt="enter image description here" title="Screen Shot 2016-01-10 at 11.36.31 AM.png"> <br>
+<img src="https://lh3.googleusercontent.com/-4itRyCPM0Bo/VpHSMSkdGfI/AAAAAAAAF6k/u7VnGWn9pug/s0/Screen+Shot+2016-01-10+at+11.35.43+AM.png" alt="enter image description here" title="Screen Shot 2016-01-10 at 11.35.43 AM.png"></p>
+
+
+
+<h3 id="由于时间原因本打算实现而尚未实现的部分">由于时间原因本打算实现而尚未实现的部分</h3>
+
+<ul>
+<li>点光源阴影，在点光源处渲染一个 <code>cubemap</code> 的深度贴图，其余部分步骤同平行光阴影。</li>
+<li>阴影过滤与反锯齿，使用 VSM 过滤及反锯齿算法使得阴影看起来更加真实。</li>
+<li>水面反射折射(只能想想…)，渲染场景的反射部分贴图和折射部分贴图，然后计算水面的物理变化，并根据折射和反射的物理性质将贴图变为水面的部分。</li>
+<li>计算大气折射，使得天空看起来更加真实。在视线到天空的路径上进行积分即可。</li>
+</ul></div></body>
+</html>
