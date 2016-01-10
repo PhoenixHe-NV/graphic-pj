@@ -72,13 +72,6 @@ let fShaderLib1 = `
 
       vec4 light = vec4(u_SceneLightColor, 1.0) * color;
 
-      //vec3 offset = u_PointLightPosition - vec3(v_LightPosition) ;
-      //float dist = dot(offset, offset);
-      //dist = dist * sqrt(dist);
-      //diffuse = max(-dot(v_Normal, normalize(offset)) * 5000.0 / dist, 0.0);
-      //diffuse = min(diffuse, 1.0);
-      //light = light + vec4(u_PointLightColor * diffuse, 1.0) * color;
-
       vec2 lightUV = v_ShadowPosition.xy / v_ShadowPosition.w * 0.5 + 0.5;
       if (lightUV.x > 0.0) {
         float shadowDist = texture2D(u_ShadowSampler, lightUV).z;
@@ -86,6 +79,14 @@ let fShaderLib1 = `
       } else {
         light = light + diffuse * color;
       }
+
+      vec3 offset = u_PointLightPosition - vec3(v_LightPosition) ;
+      float dist = dot(offset, offset);
+      dist = dist * sqrt(dist);
+      diffuse = max(-dot(v_Normal, normalize(offset)) * 5000.0 / dist, 0.0);
+      diffuse = min(diffuse, 1.0);
+      light = light + vec4(u_PointLightColor * diffuse, 1.0) * color;
+
       gl_FragColor = light;
       //gl_FragColor = vec4(shadowDist, shadowDist, shadowDist, 1.0);
       //gl_FragColor = texture2D(u_ShadowSampler, v_ShadowPosition.xy / v_ShadowPosition.w * 0.5 + 0.5);
